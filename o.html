@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container my-5">
+    <h1 class="mb-4">Dashboard</h1>
+    <div class="row">
+      <!-- User's Books -->
+      <div class="col-lg-8 mb-4">
+        <div class="card">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            User's Books
+            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#bookModal" onclick="openAddModal()">Add Book</button>
+          </div>
+          <div class="card-body p-0">
+            <table class="table table-striped mb-0" id="booksTable">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Author(s)</th>
+                  <th>ISBN</th>
+                  <th>Genre</th>
+                  <th>Purchase Date</th>
+                  <th>Read Status</th>
+                  <th>Rating</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="booksTbody">
+                <tr>
+                  <td>The Great Gatsby</td>
+                  <td>F. Scott Fitzgerald</td>
+                  <td>9780743273565</td>
+                  <td>Classic</td>
+                  <td>2023-01-15</td>
+                  <td>Read</td>
+                  <td>5</td>
+                  <td>
+                    <button class="btn btn-sm btn-warning" onclick="openEditModal(this)">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteRow(this)">Delete</button>
+                  </td>
+                </tr>
+                <!-- More rows as needed -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Master Lists -->
+      <div class="col-lg-4">
+        <!-- Authors -->
+        <div class="card mb-3">
+          <div class="card-header bg-secondary text-white">
+            Authors
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">F. Scott Fitzgerald</li>
+            <li class="list-group-item">J.K. Rowling</li>
+            <!-- Add more authors -->
+          </ul>
+        </div>
+        <!-- Genres -->
+        <div class="card mb-3">
+          <div class="card-header bg-secondary text-white">
+            Genres
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Classic</li>
+            <li class="list-group-item">Fantasy</li>
+            <!-- Add more genres -->
+          </ul>
+        </div>
+        <!-- Wishlist -->
+        <div class="card">
+          <div class="card-header bg-warning">
+            Wishlist
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">To Kill a Mockingbird</li>
+            <li class="list-group-item">1984</li>
+            <!-- Add more wishlist items -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Add/Edit Book -->
+  <div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="bookForm" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookModalLabel">Add Book</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editRowIndex">
+          <div class="mb-2">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" id="bookTitle" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Author(s)</label>
+            <input type="text" class="form-control" id="bookAuthor" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">ISBN</label>
+            <input type="text" class="form-control" id="bookISBN" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Genre</label>
+            <input type="text" class="form-control" id="bookGenre" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Purchase Date</label>
+            <input type="date" class="form-control" id="bookDate" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Read Status</label>
+            <select class="form-select" id="bookStatus" required>
+              <option value="Read">Read</option>
+              <option value="Unread">Unread</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Rating</label>
+            <input type="number" class="form-control" id="bookRating" min="1" max="5" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Open modal for adding a new book
+    function openAddModal() {
+      document.getElementById('bookModalLabel').textContent = 'Add Book';
+      document.getElementById('bookForm').reset();
+      document.getElementById('editRowIndex').value = '';
+    }
+
+    // Open modal for editing a book
+    function openEditModal(btn) {
+      const row = btn.closest('tr');
+      const cells = row.children;
+      document.getElementById('bookModalLabel').textContent = 'Edit Book';
+      document.getElementById('bookTitle').value = cells[0].textContent;
+      document.getElementById('bookAuthor').value = cells[1].textContent;
+      document.getElementById('bookISBN').value = cells[2].textContent;
+      document.getElementById('bookGenre').value = cells[3].textContent;
+      document.getElementById('bookDate').value = cells[4].textContent;
+      document.getElementById('bookStatus').value = cells[5].textContent;
+      document.getElementById('bookRating').value = cells[6].textContent;
+      document.getElementById('editRowIndex').value = row.rowIndex - 1; // tbody index
+      var modal = new bootstrap.Modal(document.getElementById('bookModal'));
+      modal.show();
+    }
+
+    // Delete a book row
+    function deleteRow(btn) {
+      if (confirm('Are you sure you want to delete this book?')) {
+        btn.closest('tr').remove();
+      }
+    }
+
+    // Handle form submit for Add/Edit
+    document.getElementById('bookForm').onsubmit = function(e) {
+      e.preventDefault();
+      const title = document.getElementById('bookTitle').value;
+      const author = document.getElementById('bookAuthor').value;
+      const isbn = document.getElementById('bookISBN').value;
+      const genre = document.getElementById('bookGenre').value;
+      const date = document.getElementById('bookDate').value;
+      const status = document.getElementById('bookStatus').value;
+      const rating = document.getElementById('bookRating').value;
+      const editIndex = document.getElementById('editRowIndex').value;
+      const tbody = document.getElementById('booksTbody');
+
+      if (editIndex === '') {
+        // Add new row
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${title}</td>
+          <td>${author}</td>
+          <td>${isbn}</td>
+          <td>${genre}</td>
+          <td>${date}</td>
+          <td>${status}</td>
+          <td>${rating}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" onclick="openEditModal(this)">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteRow(this)">Delete</button>
+          </td>
+        `;
+      } else {
+        // Edit existing row
+        const row = tbody.rows[editIndex];
+        row.cells[0].textContent = title;
+        row.cells[1].textContent = author;
+        row.cells[2].textContent = isbn;
+        row.cells[3].textContent = genre;
+        row.cells[4].textContent = date;
+        row.cells[5].textContent = status;
+        row.cells[6].textContent = rating;
+      }
+      bootstrap.Modal.getInstance(document.getElementById('bookModal')).hide();
+    };
+  </script>
+</body>
+</html>

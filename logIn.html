@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login & Logout</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .centered {
+            max-width: 370px;
+            margin: 0 auto;
+        }
+        .card {
+            border: none;
+            border-radius: 1.2rem;
+            box-shadow: 0 6px 32px 0 rgba(40, 40, 90, 0.18);
+            background: rgba(255,255,255,0.97);
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .btn-primary, .btn-success, .btn-secondary {
+            border-radius: 2rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .btn-link {
+            color: #2575fc;
+            text-decoration: none;
+        }
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+        .card-title {
+            font-weight: 700;
+            color: #2575fc;
+        }
+        #logoutSection h3 {
+            color: #2575fc;
+        }
+        #logoutSection .btn-secondary {
+            background: #6a11cb;
+            border: none;
+        }
+        #logoutSection .btn-secondary:hover {
+            background: #2575fc;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginForm" class="centered">
+        <div class="card p-4">
+            <div class="card-body">
+                <h3 class="card-title mb-4 text-center">Login</h3>
+                <div class="mb-3">
+                    <label for="loginEmail" class="form-label">Email</label>
+                    <input type="email" id="loginEmail" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" required>
+                </div>
+                <button class="btn btn-primary w-100 mb-2" onclick="login()">Login</button>
+                <button class="btn btn-link w-100" onclick="showRegister()">Register</button>
+                <button class="btn btn-link w-100" onclick="showForgot()">Forgot Password?</button>
+                <p id="loginError" class="mt-3 text-danger text-center"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerForm" class="centered" style="display:none;">
+        <div class="card p-4">
+            <div class="card-body"></div>
+                <h3 class="card-title mb-4 text-center">Register</h3>
+                <div class="mb-3">
+                    <label for="regName" class="form-label">Name</label>
+                    <input type="text" id="regName" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="regEmail" class="form-label">Email</label>
+                    <input type="email" id="regEmail" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="regPassword" class="form-label">Password</label>
+                    <input type="password" id="regPassword" class="form-control" required>
+                </div>
+                <button class="btn btn-success w-100 mb-2" onclick="register()">Register</button>
+                <button class="btn btn-link w-100" onclick="showLogin()">Back to Login</button>
+                <p id="registerError" class="mt-3 text-danger text-center"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="forgotForm" class="centered" style="display:none;">
+        <div class="card p-4">
+            <div class="card-body">
+                <h3 class="card-title mb-4 text-center">Forgot Password</h3>
+                <div class="mb-3">
+                    <label for="forgotEmail" class="form-label">Enter your email</label>
+                    <input type="email" id="forgotEmail" class="form-control" required>
+                </div>
+                <button class="btn btn-primary w-100 mb-2" onclick="forgotPassword()">Reset Password</button>
+                <button class="btn btn-link w-100" onclick="showLogin()">Back to Login</button>
+                <p id="forgotError" class="mt-3 text-danger text-center"></p>
+                <p id="forgotSuccess" class="mt-3 text-success text-center"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoutSection" class="centered" style="display:none;">
+        <div class="card p-4">
+            <div class="card-body text-center">
+                <h3 class="mb-4">Welcome, <span id="userDisplay"></span>!</h3>
+                <button class="btn btn-secondary w-100" onclick="logout()">Logout</button>
+                <a href="dashboard.html" class="btn btn-primary w-100 mt-3">Go to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // For demo: store registered user in memory
+        let registeredUser = { name: 'Admin', email: 'admin@example.com', password: 'admin' };
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+            if (email === registeredUser.email && pass === registeredUser.password) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('logoutSection').style.display = 'block';
+                document.getElementById('userDisplay').textContent = registeredUser.name;
+                document.getElementById('loginError').textContent = '';
+            } else {
+                document.getElementById('loginError').textContent = 'Invalid credentials!';
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('logoutSection').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('registerError').textContent = '';
+            document.getElementById('regName').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regPassword').value = '';
+        }
+
+        function showLogin() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('loginError').textContent = '';
+        }
+
+        function register() {
+            const regName = document.getElementById('regName').value;
+            const regEmail = document.getElementById('regEmail').value;
+            const regPass = document.getElementById('regPassword').value;
+            if (regName && regEmail && regPass) {
+                registeredUser = { name: regName, email: regEmail, password: regPass };
+                showLogin();
+                document.getElementById('loginError').textContent = 'Registration successful! Please login.';
+            } else {
+                document.getElementById('registerError').textContent = 'Please fill in all fields.';
+            }
+        }
+
+        function showForgot() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'block';
+            document.getElementById('forgotError').textContent = '';
+            document.getElementById('forgotSuccess').textContent = '';
+            document.getElementById('forgotEmail').value = '';
+        }
+
+        function forgotPassword() {
+            const email = document.getElementById('forgotEmail').value;
+            document.getElementById('forgotError').textContent = '';
+            document.getElementById('forgotSuccess').textContent = '';
+            if (!email) {
+                document.getElementById('forgotError').textContent = 'Please enter your email.';
+                return;
+            }
+            if (email === registeredUser.email) {
+                document.getElementById('forgotSuccess').textContent = 'Password reset link sent to your email (demo only).';
+            } else {
+                document.getElementById('forgotError').textContent = 'Email not found.';
+            }
+        }
+    </script>
+</body>
+</html>

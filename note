@@ -1,0 +1,9 @@
+# To access MySQL from your command line, use:
+
+mysql -u your_username -p
+
+# Replace 'your_username' with your MySQL username.
+# After running the command, enter your password when prompted.
+
+# If MySQL is not in your PATH, you may need to specify the full path, e.g.:
+# "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u your_username -p
